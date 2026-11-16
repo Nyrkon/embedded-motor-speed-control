@@ -48,7 +48,8 @@ UART_HandleTypeDef huart3;
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
-
+int32_t absolute_position = 0;
+uint16_t previous_ticks = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -99,7 +100,9 @@ int main(void)
   MX_USB_OTG_FS_PCD_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-
+  /* USER CODE BEGIN 2 */
+  HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
+  previous_ticks = TIM3->CNT;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -109,6 +112,19 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  uint16_t current_ticks = TIM3->CNT;
+
+	  // Matematický trik: Přetypování rozdílu dvou uint16_t na int16_t
+	  // automaticky a bezeztrátově vyřeší hardwarové přetečení i podtečení čítače.
+	  int16_t delta_ticks = (int16_t)(current_ticks - previous_ticks);
+	  previous_ticks = current_ticks;
+
+	  // Akumulace do celkové polohy (tato proměnná už může jít do miliard)
+	  absolute_position += delta_ticks;
+
+	  // --- Přepočet na fyzické jednotky pro testovací stand ---
+	  // Pokud máš např. IRC s rozlišením 1000 pulzů (PPR), v režimu TI1+TI2 generuje 4000 tiků na otáčku.
+	  // float angle_degrees = (absolute_position * 360.0f) / 4000.0f;
   }
   /* USER CODE END 3 */
 }
@@ -194,7 +210,7 @@ static void MX_TIM3_Init(void)
   htim3.Init.Period = 65535;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  sConfig.EncoderMode = TIM_ENCODERMODE_TI12;
+  sConfig.EncoderMode = TIM_ENCODERMODE_TI1;
   sConfig.IC1Polarity = TIM_ICPOLARITY_RISING;
   sConfig.IC1Selection = TIM_ICSELECTION_DIRECTTI;
   sConfig.IC1Prescaler = TIM_ICPSC_DIV1;
