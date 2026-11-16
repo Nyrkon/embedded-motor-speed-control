@@ -151,22 +151,21 @@ int main(void)
 	  //Treti Pozice
 	  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_5,1);
 
+	  //Treti Cislo
+	  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_3, bits[8]);
+	  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_2, bits[9]);
+	  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_1, bits[10]);
+	  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_0, bits[11]);
+
 	  //Ctvrta Pozice
 	  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_4,1);
 
+	  //Ctvrte Cislo
+	  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_3, bits[12]);
+	  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_2, bits[13]);
+	  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_1, bits[14]);
+	  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_0, bits[15]);
 
-	  //Ctvrta
-	  //Pozice
-	  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_7,0);
-	  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_6,0);
-	  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_5,0);
-	  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_4,1);
-
-	  //Cislo
-	  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_3,0);
-	  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_2,1);
-	  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_1,1);
-	  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_0,0);
 
   }
   /* USER CODE END 3 */
